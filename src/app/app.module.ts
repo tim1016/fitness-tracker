@@ -4,6 +4,8 @@ import { NgModule } from "@angular/core";
 import { AppComponent } from "./app.component";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { FormsModule } from "@angular/forms";
+import { ReactiveFormsModule } from "@angular/forms";
+
 import { MaterialModule } from "./material.module";
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { SignupComponent } from "./auth/signup/signup.component";
@@ -30,6 +32,7 @@ import { AppRoutingModule } from "./app-routing.module";
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
+    ReactiveFormsModule,
     MaterialModule,
     AppRoutingModule,
     FlexLayoutModule
