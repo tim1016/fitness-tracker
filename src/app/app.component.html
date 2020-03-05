@@ -1,9 +1,11 @@
 <mat-sidenav-container>
   <mat-sidenav #sidenav role="navigation">
-    <p>I am the sidenav</p>
+    <app-sidenav-list (closeSidenav)="sidenav.close()"></app-sidenav-list>
   </mat-sidenav>
   <mat-sidenav-content>
-    <button (click)="sidenav.toggle()">click</button>
-    <router-outlet></router-outlet
-  ></mat-sidenav-content>
+    <app-header (sidenavToggle)="sidenav.toggle()"></app-header>
+    <main>
+      <router-outlet></router-outlet>
+    </main>
+  </mat-sidenav-content>
 </mat-sidenav-container>

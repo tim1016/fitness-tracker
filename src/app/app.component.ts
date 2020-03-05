@@ -8,5 +8,6 @@ import { MatButtonModule } from "@angular/material/button";
 })
 export class AppComponent {
   title = "fitness-tracker";
-  openSideNav = false;
+
+  onToggle() {}
 }
