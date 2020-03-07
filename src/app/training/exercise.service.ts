@@ -52,4 +52,8 @@ export class ExerciseService {
   getCurrentExercise() {
     return { ...this.runningExercise };
   }
+
+  getAllExercises() {
+    return this.exercises.slice();
+  }
 }
