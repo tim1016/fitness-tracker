@@ -1,47 +1,40 @@
-import { Component, OnInit, EventEmitter, Output } from "@angular/core";
-import { AngularFirestore } from "@angular/fire/firestore";
+import {
+  Component,
+  OnInit,
+  EventEmitter,
+  Output,
+  OnDestroy
+} from "@angular/core";
 import { ExerciseService } from "../exercise.service";
 import { Exercise } from "../exercise.model";
 import { NgForm } from "@angular/forms";
-import { Observable } from "rxjs";
-import { map } from "rxjs/operators";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-new-training",
   templateUrl: "./new-training.component.html",
   styleUrls: ["./new-training.component.css"]
 })
-export class NewTrainingComponent implements OnInit {
+export class NewTrainingComponent implements OnInit, OnDestroy {
   @Output() trainingStart = new EventEmitter<void>();
   selectedId: string;
-  exercises: Observable<Exercise[]>;
+  exercises: Exercise[];
+  exercisesChangedSubscription: Subscription;
 
-  constructor(
-    private exerciseService: ExerciseService,
-    private db: AngularFirestore
-  ) {}
+  constructor(private trainingService: ExerciseService) {}
 
   ngOnInit(): void {
-    this.exercises = this.db
-      .collection("availableExercises")
-      .snapshotChanges()
-      .pipe(
-        map(docArray =>
-          docArray.map(
-            doc =>
-              ({
-                id: doc.payload.doc.id,
-                ...(doc.payload.doc.data() as object)
-              } as Exercise)
-          )
-        )
-      );
-    // .subscribe(result => {
-    //   console.log(result);
-    // });
-    // this.exercises = this.exerciseService.getExercises();
+    this.trainingService.fetchAvailableExercises();
+    this.trainingService.exercisesChanged.subscribe(exercises => {
+      this.exercises = exercises;
+    });
   }
   onStartTraining(form: NgForm) {
-    this.exerciseService.startExercise(form.value.exercise);
+    this.trainingService.startExercise(form.value.exercise);
+  }
+
+  ngOnDestroy() {
+    if (this.exercisesChangedSubscription)
+      this.exercisesChangedSubscription.unsubscribe();
   }
 }
